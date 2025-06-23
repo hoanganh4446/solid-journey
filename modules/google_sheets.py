@@ -30,27 +30,6 @@ def format_date_with_time(date_str):
             return None
     return None
 
-# Hàm để chèn tiêu đề ngày hôm nay
-def insert_today_title():
-    tz = sheet.spreadsheet.time_zone
-    now = datetime.datetime.now()
-    dd = now.strftime('%d')
-    mm = now.strftime('%m')
-    yyyy = now.strftime('%Y')
-    title = f"NGÀY {dd} THÁNG {int(mm)} NĂM {yyyy}"
-
-    # Lấy dòng cần chèn tiêu đề (Dòng sẽ tương ứng với ngày, ví dụ: 1 cho ngày đầu, 2 cho ngày tiếp theo...)
-    # Dòng tiêu đề sẽ thay đổi mỗi ngày
-    title_row = now.day  # Dòng tiêu đề sẽ tương ứng với ngày trong tháng (ví dụ: ngày 23 sẽ là dòng 23)
-
-    # Kiểm tra xem tiêu đề đã có chưa
-    first_row = worksheet.get_range(title_row, 1, title_row, worksheet.col_count).get_values()[0]
-    if title not in first_row:
-        worksheet.append_row([title])  # Thêm tiêu đề vào hàng cuối cùng
-        worksheet.set_row_height(title_row, 50)  # Đặt chiều cao dòng
-        worksheet.get_range(title_row, 1, title_row, worksheet.col_count).set_font_weight('bold')\
-            .set_font_size(18).set_horizontal_alignment('center').set_vertical_alignment('middle')
-
 # Hàm cập nhật tất cả dữ liệu từ Airtable lên Google Sheets
 def update_all(records):
     print(f"Đang xử lý {len(records)} bản ghi từ Airtable.")
@@ -87,10 +66,3 @@ def update_all(records):
         # Thêm dữ liệu vào Google Sheets
         worksheet.append_row(row)  # append_row sẽ thêm dữ liệu vào cuối bảng
         print(f"✅ Đã thêm dữ liệu cho thiết bị {device_id} vào Google Sheets.")
-
-# Hàm gọi trong quá trình cập nhật để đảm bảo tiêu đề được chèn
-def run_update():
-    insert_today_title()  # Chèn tiêu đề ngày hôm nay vào dòng tương ứng
-    # Giả sử 'all' là danh sách các bản ghi từ Airtable
-    all = get_airtable_data()  # Cần thay thế với hàm thực tế lấy dữ liệu từ Airtable
-    update_all(all)  # Cập nhật dữ liệu vào Google Sheets
