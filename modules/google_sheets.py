@@ -4,7 +4,7 @@ import datetime
 
 # Đọc thông tin xác thực từ tệp JSON
 creds = Credentials.from_service_account_file(
-    'modules/sound-jigsaw-394510-c7746fdc8d26.json', 
+    'sound-jigsaw-394510-c7746fdc8d26.json', 
     scopes=["https://www.googleapis.com/auth/spreadsheets"]
 )
 
